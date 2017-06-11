@@ -1,5 +1,81 @@
-<ion-view view-title="Stock">
-  <ion-content>
-    <h1>Stock</h1>
+<ion-view view-title="{{ticker}}">
+  <div class="bar bar-subheader bar-light">
+    <div class="buttons" side="left">
+      <div class="button button-clear">
+        <h6>{{stockPriceData.name}}</h6>
+      </div>
+    </div>
+
+    <h2 class="title button-left button-right">{{stockPriceData.lastPrice}}</h2>
+
+    <div class="buttons" side="right">
+      <div class="button button-clear">
+        <h6>{{stockPriceData.percentChange}}%</h6>
+      </div>
+    </div>
+  </div>
+
+  <ion-content class="has-subheader">
+    <img ng-src="http://finviz.com/chart.ashx?t={{ticker}}&ty=c&ta=1&p=d&s=l" style="width: 100%" />
+    <div class="card">
+      <div class="item item-divider">Market Data</div>
+      <div class="row row-center">
+        <div class="col">Ask: </div>
+        <div class="col">{{stockPriceData.ask}}</div>
+        <div class="col">Bid: </div>
+        <div class="col">{{stockPriceData.bid}}</div>
+      </div>
+      <div class="row row-center">
+        <div class="col">Prev. Close: </div>
+        <div class="col">{{stockPriceData.previousClose}}</div>
+        <div class="col">Open: </div>
+        <div class="col">{{stockPriceData.open}}</div>
+      </div>
+      <div class="row row-center">
+        <div class="col">Day High: </div>
+        <div class="col">{{stockPriceData.high}}</div>
+        <div class="col">Day Low: </div>
+        <div class="col">{{stockPriceData.low}}</div>
+      </div>
+      <div class="row row-center">
+        <div class="col">52w High: </div>
+        <div class="col">{{stockPriceData.fiftyTwoWkHigh}}</div>
+        <div class="col">52w Low: </div>
+        <div class="col">{{stockPriceData.fiftyTwoWkLow}}</div>
+      </div>
+      <div class="row row-center">
+        <div class="col">Volume: </div>
+        <div class="col">{{stockPriceData.volume}}</div>
+        <div class="col">Avg Volume: </div>
+        <div class="col">{{stockPriceData.avgVolume}}</div>
+      </div>
+      <div class="row row-center">
+        <div class="col">Market Cap: </div>
+        <div class="col">{{}}</div>
+        <div class="col">EBITDA: </div>
+        <div class="col">{{}}</div>
+      </div>
+      <div class="row row-center">
+        <div class="col">P/E: </div>
+        <div class="col">{{}}</div>
+        <div class="col">EPS: </div>
+        <div class="col">{{}}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="item item-divider">Notes</div>
+      <a class="item">
+        <h2>Note Title</h2>
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="item item-divider">News</div>
+      <a class="item item-icon-right">
+        <h2>News Story Title</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+    </div>
   </ion-content>
 </ion-view>
