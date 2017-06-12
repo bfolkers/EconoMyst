@@ -23,7 +23,38 @@ angular.module('economyst.services', [])
 //   };
 // })
 
-.service('modalService')
+.service('modalService', function($ionicModal) {
+
+  this.openModal = function(id) {
+    var _this = this;
+    if (id == 1) {
+      $ionicModal.fromTemplateUrl('templates/search.html', {
+        scope: null,
+        controller: 'SearchCtrl'
+      }).then(function(modal) {
+        _this.modal = modal;
+        _this.modal.show();
+      });
+    } else if (id == 2) {
+
+    }
+
+    // $ionicModal.fromTemplateUrl('templates/login.html', {
+    //   scope: $scope
+    // }).then(function(modal) {
+    //   $scope.modal = modal;
+    // });
+    // $ionicModal.fromTemplateUrl('templates/login.html', {
+    //   scope: $scope
+    // }).then(function(modal) {
+    //   $scope.modal = modal;
+    // });
+  };
+
+  this.closeModal = function() {
+    var _this = this;
+  };
+})
 
 .factory('fillMyStocksCacheService', function(CacheFactory) {
 

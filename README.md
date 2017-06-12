@@ -1,25 +1,28 @@
-Ionic App Base
+EconoMyst
 =====================
 
-A starting project for Ionic that optionally supports using custom SCSS.
+A mobile app that tracks stock market values and macroeconomic statistics and
+stores them in a user dashboard. EconoMyst is a non-deployed, non-commercial hybrid Ionic app I used for my Galvanize Cohort G43 Capstone project in June 2017.
 
-## Using this project
+## Credits
 
-We recommend using the [Ionic CLI](https://github.com/driftyco/ionic-cli) to create new Ionic projects that are based on this project but use a ready-made starter template.
+* Yahoo Finance RSS Ticker Feed
+* Barchart API
+* Finviz Chart API
+* Ionic
+* AngularJS
+* D3.js
+* Udemy
+* Hunter Leaman
 
-For example, to start a new Ionic project with the default tabs interface, make sure the `ionic` utility is installed:
+###### Addendum:
 
-```bash
-$ npm install -g ionic
-```
+This application uses Open Source components. You can find the license information below. I acknowledge and I am grateful to these developers for their contributions to open source.
 
-Then run: 
+Copyright (c) 2016 Hunter Leaman
 
-```bash
-$ ionic start myProject tabs
-```
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/getting-started) page and the [Ionic CLI](https://github.com/driftyco/ionic-cli) repo.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-## Issues
-Issues have been disabled on this repo, if you do find an issue or have a question consider posting it on the [Ionic Forum](http://forum.ionicframework.com/).  Or else if there is truly an error, follow our guidelines for [submitting an issue](http://ionicframework.com/submit-issue/) to the main Ionic repository.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
