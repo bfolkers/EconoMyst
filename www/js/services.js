@@ -23,6 +23,8 @@ angular.module('economyst.services', [])
 //   };
 // })
 
+.service('modalService')
+
 .factory('fillMyStocksCacheService', function(CacheFactory) {
 
   var myStocksCache;
@@ -41,7 +43,6 @@ angular.module('economyst.services', [])
       {ticker: "FB"},
       {ticker: "NFLX"},
       {ticker: "TSLA"},
-      {ticker: "BRK-A"},
       {ticker: "INTC"},
       {ticker: "MSFT"},
       {ticker: "GE"},
@@ -49,9 +50,7 @@ angular.module('economyst.services', [])
       {ticker: "C"},
       {ticker: "T"},
       {ticker: "ACN"}
-
     ];
-
     myStocksCache.put('myStocks', myStocksArray);
   };
 
@@ -74,18 +73,34 @@ angular.module('economyst.services', [])
   return myStocks;
 })
 
-.factory('followStockService', function() {
+.factory('followStockService', function(myStocksArrayService, myStocksCacheService) {
   return {
     follow: function(ticker) {
-
+      var stockToAdd = {
+        "ticker": ticker
+      };
+      myStocksArrayService.push(stockToAdd);
+      myStocksCacheService.put('myStocks', myStocksArrayService);
     },
 
     unfollow: function(ticker) {
-
+      for (var i = 0; i < myStocksArrayService.length; i++) {
+        if (myStocksArrayService[i].ticker == ticker) {
+          myStocksArrayService.splice(i, 1);
+          myStocksCacheService.remove('myStocks');
+          myStocksCacheService.put('myStocks', myStocksArrayService);
+          break;
+        }
+      }
     },
 
     checkFollowing: function(ticker) {
-
+      for (var i = 0; i < myStocksArrayService.length; i++) {
+        if (myStocksArrayService[i].ticker == ticker) {
+          return true;
+        }
+      }
+      return false;
     }
   };
 })

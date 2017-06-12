@@ -7,8 +7,8 @@
 angular.module('economyst', [
   'ionic',
   'angular-cache',
-  'nvd3',
-  'nvChart',
+  // 'nvd3',
+  // 'nvChart',
   'cb.x2js',
   'economyst.controllers',
   'economyst.services',

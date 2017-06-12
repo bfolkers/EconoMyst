@@ -1,4 +1,8 @@
-<ion-view view-title="{{ticker}}">
+<ion-view view-title="{{ticker}}" drag-content="false">
+
+  <ion-nav-buttons side="right">
+    <button class="button icon-left ng-style:reactiveColor" ng-class="following ? 'ion-ios-checkmark-empty' : 'ion-ios-plus'" ng-bind="following ? 'Following ' : 'Follow '" ng-click="toggleFollow()"></button>
+  </ion-nav-buttons>
   <div class="bar bar-subheader bar-light" id="stock-subheader-bar">
     <div class="buttons" side="left">
       <div class="button button-clear display-flex">
