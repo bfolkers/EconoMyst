@@ -23,7 +23,58 @@ angular.module('economyst.services', [])
 //   };
 // })
 
-.factory('followStockService', () => {
+.factory('fillMyStocksCacheService', function(CacheFactory) {
+
+  var myStocksCache;
+  if (!CacheFactory.get('myStocksCache')) {
+    myStocksCache = CacheFactory('myStocksCache', {
+      storageMode: 'localStorage'
+    });
+  } else {
+    myStocksCache = CacheFactory.get('myStocksCache');
+  }
+
+  var fillMyStocksCache = function() {
+    var myStocksArray = [
+      {ticker: "AAPL"},
+      {ticker: "GPRO"},
+      {ticker: "FB"},
+      {ticker: "NFLX"},
+      {ticker: "TSLA"},
+      {ticker: "BRK-A"},
+      {ticker: "INTC"},
+      {ticker: "MSFT"},
+      {ticker: "GE"},
+      {ticker: "BAC"},
+      {ticker: "C"},
+      {ticker: "T"},
+      {ticker: "ACN"}
+
+    ];
+
+    myStocksCache.put('myStocks', myStocksArray);
+  };
+
+  return {
+    fillMyStocksCache: fillMyStocksCache
+  };
+})
+
+.factory('myStocksCacheService', function(CacheFactory) {
+  var myStocksCache = CacheFactory.get('myStocksCache');
+  return myStocksCache;
+})
+
+.factory('myStocksArrayService', function(fillMyStocksCacheService, myStocksCacheService) {
+
+  if (!myStocksCacheService.info('myStocks')) {
+    fillMyStocksCacheService.fillMyStocksCache();
+  }
+  var myStocks = myStocksCacheService.get('myStocks');
+  return myStocks;
+})
+
+.factory('followStockService', function() {
   return {
     follow: function(ticker) {
 
@@ -39,7 +90,7 @@ angular.module('economyst.services', [])
   };
 })
 
-.factory('stockDataService', function($q, $http) {
+.factory('stockDataService', function($q, $http, stockDetailsCacheService) {
   // var getDetailsData = function(ticker) {
   //   var deferred = $q.defer();
   //   var url = "http://marketdata.websol.barchart.com/getQuote.json?key=16d4f4b5d562d5fdb21390e52afaeba2&symbols=" + ticker.toString();
@@ -59,18 +110,26 @@ angular.module('economyst.services', [])
 
   var getPriceData = function(ticker) {
     var deferred = $q.defer();
+
+    var cacheKey = ticker;
+    var stockDetailsCache = stockDetailsCacheService.get(cacheKey);
+
     var url = "http://marketdata.websol.barchart.com/getQuote.json?key=16d4f4b5d562d5fdb21390e52afaeba2&symbols=" + ticker + "&fields=ask%2Cbid%2CfiftyTwoWkHigh%2CfiftyTwoWkLow%2CavgVolume%2CpreviousClose&mode=R";
 
-    $http.get(url)
-      .then(function(json) {
-        var jsonData = json.data.results[0];
-        deferred.resolve(jsonData);
-      })
-      .catch(function(err) {
-        console.log("Stock data error" + err);
-        deferred.reject();
-      });
-
+    if (stockDetailsCache) {
+      deferred.resolve(stockDetailsCache);
+    } else {
+      $http.get(url)
+        .then(function(json) {
+          var jsonData = json.data.results[0];
+          deferred.resolve(jsonData);
+          stockDetailsCacheService.put(cacheKey, jsonData);
+        })
+        .catch(function(err) {
+          console.log("Stock data error" + err);
+          deferred.reject();
+        });
+    }
       return deferred.promise;
   };
   return {
@@ -80,51 +139,59 @@ angular.module('economyst.services', [])
 
 })
 
-// .factory('chartDataService', function($q, $http, encodeURIService) {
+// .factory('chartDataService', function($q, $http, encodeURIService, chartDataCacheService) {
 //   var getHistoricalData = function(ticker, fromDate, todayDate) {
 //     var deferred = $q.defer();
+//
+//     var cacheKey = ticker;
+//     var chartDataCache = chartDataCacheService.get(cacheKey);
+//
 //     var url = 'http://marketdata.websol.barchart.com/getHistory.json?key=16d4f4b5d562d5fdb21390e52afaeba2&symbol=' + ticker + '&type=daily&startDate=' + fromDate + '&endDate=' + todayDate;
 //
-//     $http.get(url)
-//       .then(function(json) {
-//         var jsonData = json.data.results;
+//     if (chartDataCache) {
+//       deferred.resolve(chartDataCache);
+//     } else {
+//       $http.get(url)
+//         .then(function(json) {
+//           var jsonData = json.data.results;
 //
-//         var priceData = [];
-//         var volumeData = [];
+//           var priceData = [];
+//           var volumeData = [];
 //
-//         jsonData.forEach(function(dayDataObject) {
-//           // console.log(dayDataObject);
-//           var dateToMillis = dayDataObject.timestamp;
-//           var date = Date.parse(dateToMillis);
-//           var price = parseFloat(Math.round(dayDataObject.close * 100) / 100).toFixed(2);
-//           var volume = dayDataObject.volume;
-//           var volumeDatum = '[' + date + ',' + volume + ']';
-//           var priceDatum = '[' + date + ',' + price + ']';
+//           jsonData.forEach(function(dayDataObject) {
+//             // console.log(dayDataObject);
+//             var dateToMillis = dayDataObject.timestamp;
+//             var date = Date.parse(dateToMillis);
+//             var price = parseFloat(Math.round(dayDataObject.close * 100) / 100).toFixed(2);
+//             var volume = dayDataObject.volume;
+//             var volumeDatum = '[' + date + ',' + volume + ']';
+//             var priceDatum = '[' + date + ',' + price + ']';
 //
-//           // console.log(volumeDatum, priceDatum);
+//             // console.log(volumeDatum, priceDatum);
 //
-//           volumeData.unshift(volumeDatum);
-//           priceData.unshift(priceDatum);
+//             volumeData.unshift(volumeDatum);
+//             priceData.unshift(priceDatum);
+//           });
+//
+//           var formattedChartData =
+//           '[{' +
+//             '"key":' + '"volume",' +
+//             '"bar":' + 'true,' +
+//             '"values":' + '[' + volumeData + ']' +
+//           '},' +
+//           '{' +
+//             '"key":' + '"' + ticker + '",' +
+//             '"values":' + '[' + priceData + ']' +
+//           '}]';
+//
+//           deferred.resolve(formattedChartData);
+//           chartDataCacheService.put(cacheKey, formattedChartData);
+//         })
+//         .catch(function(error) {
+//           console.log("Chart data error: " + error);
+//           deferred.reject();
 //         });
-//
-//         var formattedChartData =
-//         '[{' +
-//           '"key":' + '"volume",' +
-//           '"bar":' + 'true,' +
-//           '"values":' + '[' + volumeData + ']' +
-//         '},' +
-//         '{' +
-//           '"key":' + '"' + ticker + '",' +
-//           '"values":' + '[' + priceData + ']' +
-//         '}]';
-//
-//         deferred.resolve(formattedChartData);
-//       })
-//       .catch(function(error) {
-//         console.log("Chart data error: " + error);
-//         deferred.reject();
-//       });
-//
+//     }
 //       return deferred.promise;
 //
 //   };
@@ -133,6 +200,40 @@ angular.module('economyst.services', [])
 //     getHistoricalData: getHistoricalData
 //   };
 // })
+
+// .factory('chartDataCacheService', function(CacheFactory) {
+//   var chartDataCache;
+//
+//   if (!CacheFactory.get('chartDataCache')) {
+//     chartDataCache = CacheFactory('chartDataCache', {
+//       maxAge: 60 * 60 * 8 * 1000,
+//       deleteOnExpire: 'aggressive',
+//       storageMode: 'localStorage'
+//     });
+//   } else {
+//     chartDataCache = CacheFactory.get('chartDataCache');
+//   }
+//
+//   return chartDataCache;
+// })
+
+.factory('stockDetailsCacheService', function(CacheFactory) {
+
+  var stockDetailsCache;
+
+  if(!CacheFactory.get('stockDetailsCache')) {
+    stockDetailsCache = CacheFactory('stockDetailsCache', {
+      maxAge: 60 * 1000,
+      deleteOnExpire: 'aggressive',
+      storageMode: 'localStorage'
+    });
+  }
+  else {
+    stockDetailsCache = CacheFactory.get('stockDetailsCache');
+  }
+
+  return stockDetailsCache;
+})
 
 .factory('newsService', function($q, $http) {
   return {

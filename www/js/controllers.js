@@ -41,25 +41,12 @@ angular.module('economyst.controllers', [])
   };
 })
 
-.controller('MyStocksCtrl', ['$scope',
-  function($scope) {
+.controller('MyStocksCtrl', ['$scope', 'myStocksArrayService',
+  function($scope, myStocksArrayService) {
 
-    $scope.myStocksArray = [
-      {ticker: "AAPL"},
-      {ticker: "GPRO"},
-      {ticker: "FB"},
-      {ticker: "NFLX"},
-      {ticker: "TSLA"},
-      {ticker: "BRK-A"},
-      {ticker: "INTC"},
-      {ticker: "MSFT"},
-      {ticker: "GE"},
-      {ticker: "BAC"},
-      {ticker: "C"},
-      {ticker: "T"},
-      {ticker: "ACN"}
+    $scope.myStocksArray = myStocksArrayService;
+    console.log(myStocksArrayService);
 
-    ];
 }])
 
 .controller('StockCtrl', ['$scope', '$stateParams', '$window', 'stockDataService', 'newsService',/* 'chartDataService', 'dateService',*/
@@ -98,7 +85,7 @@ angular.module('economyst.controllers', [])
       var promise = stockDataService.getPriceData($scope.ticker);
       promise
         .then(function(data) {
-          console.log(data);
+          // console.log(data);
           $scope.stockPriceData = data;
         });
     }
