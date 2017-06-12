@@ -7,17 +7,17 @@
 
     <link rel="manifest" href="manifest.json">
 
-    <!-- un-comment this code to enable service worker
+    <!-- un-comment this code to enable service worker-->
     <script>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js')
           .then(() => console.log('service worker installed'))
           .catch(err => console.log('Error', err));
       }
-    </script>-->
+    </script>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -37,10 +37,18 @@
     <script src="js/directives.js"></script>
 
     <!--Third party files-->
-    <script src="lib/d3/d3.min.js"></script>
-    <script src="lib/nvd3/nv.d3.js"></script>
-    <script src="lib/angular-nvd3/dist/angular-nvd3.min.js"></script>
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="./lib/d3/d3.min.js"></script>
+    <script src="./lib/nvd3/build/nv.d3.js"></script>
+    <script src="./lib/angular-nvd3/dist/angular-nvd3.min.js"></script>
+    <script src="./lib/angular-x2js/dist/x2js.min.js"></script>
+    <script src="./lib/x2js/xml2json.min.js"></script>
+    <script src="./lib/nv-chart/nv-chart.min.js"></script>
+
+
+
+    <!-- <link href="./lib/nvd3/nv.d3.min.css" rel="stylesheet"> -->
+    <link href="./lib/nv-chart/nv-chart.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
 
   </head>
