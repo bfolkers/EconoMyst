@@ -23,6 +23,98 @@ angular.module('economyst.services', [])
 //   };
 // })
 
+.constant('FIREBASE_URL', 'https://economyst-a12f3.firebaseio.com/ ')
+
+.service('firebaseService', function($firebaseObject) {
+
+})
+
+// .factory('firebaseRef', function($firebase, FIREBASE_URL) {
+//
+//   var firebaseRef = new Firebase(FIREBASE_URL);
+//
+//   return firebaseRef;
+// })
+
+.factory('firebaseRef', function(firebase, $firebase, $firebaseObject) {
+  var firebaseRef = firebase.database().ref();
+  // this.data = $firebaseObject(firebaseRef);
+
+  return firebaseRef;
+})
+
+.factory('userService', function($rootScope, firebase, $firebase, $firebaseObject, firebaseRef, modalService) {
+  var login = function(user) {
+    firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+      .then(function(status) {
+        $rootScope.currentUser = user;
+        modalService.closeModal();
+      })
+      .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+      // ...
+    });
+  };
+
+  var signup = function(user) {
+    firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+      .then(function(status) {
+        login(user);
+      })
+      .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+      // ...
+    });
+
+  };
+
+  var logout = function() {
+    firebase.auth().signOut()
+      .then(function() {
+        $rootScope.currentUser = '';
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
+  var getUser = function() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log(user);
+        return user;
+      } else {
+        return null;
+      }
+    });
+    // var user = firebase.auth().currentUser;
+    //
+    // if (user) {
+    //   return user;
+    // } else {
+    //   return null;
+    // }
+
+
+  };
+
+  if (getUser()) {
+    $rootScope.currentUser = getUser();
+  }
+
+  return {
+    login: login,
+    signup: signup,
+    logout: logout
+  };
+})
+
 .service('modalService', function($ionicModal) {
 
   this.openModal = function(id) {
@@ -37,15 +129,19 @@ angular.module('economyst.services', [])
       });
     } else if (id == 2) {
       $ionicModal.fromTemplateUrl('templates/login.html', {
-        scope: $scope
+        scope: null,
+        controller: 'LoginSearchCtrl',
       }).then(function(modal) {
-        $scope.modal = modal;
+        _this.modal = modal;
+        _this.modal.show();
       });
     } else if (id == 3) {
-      $ionicModal.fromTemplateUrl('templates/login.html', {
-        scope: $scope
+      $ionicModal.fromTemplateUrl('templates/signup.html', {
+        scope: null,
+        controller: 'LoginSearchCtrl',
       }).then(function(modal) {
-        $scope.modal = modal;
+        _this.modal = modal;
+        _this.modal.show();
       });
     }
   };
@@ -164,7 +260,7 @@ angular.module('economyst.services', [])
     var cacheKey = ticker;
     var stockDetailsCache = stockDetailsCacheService.get(cacheKey);
 
-    var url = "http://marketdata.websol.barchart.com/getQuote.json?key=16d4f4b5d562d5fdb21390e52afaeba2&symbols=" + ticker + "&fields=ask%2Cbid%2CfiftyTwoWkHigh%2CfiftyTwoWkLow%2CavgVolume%2CpreviousClose&mode=R";
+    var url = "https://galvanize-cors-proxy.herokuapp.com/http://marketdata.websol.barchart.com/getQuote.json?key=16d4f4b5d562d5fdb21390e52afaeba2&symbols=" + ticker + "&fields=ask%2Cbid%2CfiftyTwoWkHigh%2CfiftyTwoWkLow%2CavgVolume%2CpreviousClose&mode=R";
 
     if (stockDetailsCache) {
       deferred.resolve(stockDetailsCache);
@@ -290,7 +386,7 @@ angular.module('economyst.services', [])
     getNews: function(ticker) {
       var deferred = $q.defer();
       var x2js = new X2JS();
-      var url = "http://finance.yahoo.com/rss/headline?s=" + ticker;
+      var url = "https://galvanize-cors-proxy.herokuapp.com/http://finance.yahoo.com/rss/headline?s=" + ticker;
 
       $http.get(url)
         .success(function(xml) {
