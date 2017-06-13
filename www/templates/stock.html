@@ -1,5 +1,4 @@
 <ion-view view-title="{{ticker}}" drag-content="false">
-
   <ion-nav-buttons side="right">
     <button class="button icon-left ng-style:reactiveColor" ng-class="following ? 'ion-ios-checkmark-empty' : 'ion-ios-plus'" ng-bind="following ? 'Following ' : 'Follow '" ng-click="toggleFollow()"></button>
   </ion-nav-buttons>
@@ -9,16 +8,13 @@
         <h6 id="stock-name">{{stockPriceData.name}}</h6>
       </div>
     </div>
-
     <h2 class="title button-left button-right" id="stock-price">{{stockPriceData.lastPrice.toFixed(2)}}</h2>
-
     <div class="buttons" side="right">
       <div class="button button-clear">
         <h6 id="stock-change" ng-class="stockPriceData.percentChange < 0 ? 'assertive' : 'balanced'"><span ng-if="stockPriceData.percentChange > 0">+</span>{{stockPriceData.percentChange}}%</h6>
       </div>
     </div>
   </div>
-
   <ion-content class="has-subheader">
     <img ng-src="http://finviz.com/chart.ashx?t={{ticker}}&ty=c&ta=1&p=d&s=l" style="width: 100%" />
     <!-- <div ng-if="chartView == 4" nv-chart="chartOptions" style="height: 70vh;"></div> -->

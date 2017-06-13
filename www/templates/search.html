@@ -1,0 +1,29 @@
+<ion-modal-view ng-controller="SearchCtrl" id="search">
+  <div class="bar bar-header bar-dark item-input-inset">
+    <div class="item-input-wrapper">
+      <i class="ion-ios-search-strong placeholder-icon light"></i>
+      <input type="text" placeholder="Search stocks..." ng-model="searchQuery" ng-change="search()">
+      <i class="icon ion-close-round dark" ng-click="closeModal()"></i>
+    </div>
+  </div>
+  <ion-content class="has-header">
+    <div class="row row-center" ng-show="searchQuery" ng-hide="searchResults || !searchQuery">
+      <div class="col"></div>
+      <div class="col">
+        <ion-spinner class="spinner-dark margin-auto"></ion-spinner>
+      </div>
+    </div>
+    <div class="row row-center" ng-if="searchQuery && searchResults" ng-hide="searchResults.length != 0">
+      <div class="col">
+        <h5 class="dark text-align-center">No Results</h5>
+      </div>
+    </div>
+    <ion-list>
+      <ion-item class="item-dark" ng-repeat="result in searchResults" ng-click="goToStock(result.Symbol)">
+        <h3 class="light">{{result.Symbol}}</h3>
+        <h5 class="light">{{result.Name}}</h5>
+        <h6 class="light">{{result.Exchange}}</h6>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

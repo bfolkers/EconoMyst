@@ -12,8 +12,8 @@ angular.module('economyst', [
   'cb.x2js',
   'economyst.controllers',
   'economyst.services',
-  'economyst.directives',
-  'economyst.filters'
+  'economyst.directives'/*,
+  'economyst.filters'*/
 ])
 
 .run(function($ionicPlatform) {

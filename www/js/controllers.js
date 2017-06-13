@@ -1,38 +1,9 @@
 angular.module('economyst.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
-
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  // Form data for the login modal
-  $scope.loginData = {};
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
-})
+.controller('AppCtrl', ['$scope', 'modalService',
+  function($scope, modalService) {
+    $scope.modalService = modalService;
+}])
 
 .controller('MyStocksCtrl', ['$scope', 'myStocksArrayService',
   function($scope, myStocksArrayService) {
@@ -86,7 +57,6 @@ angular.module('economyst.controllers', [])
       var promise = stockDataService.getPriceData($scope.ticker);
       promise
         .then(function(data) {
-          // console.log(data);
           $scope.stockPriceData = data;
         });
     }
@@ -168,6 +138,31 @@ angular.module('economyst.controllers', [])
   //   transitionDuration: 500
 	// };
 
+}])
+
+.controller('SearchCtrl', ['$scope', '$state', 'modalService', 'searchService',
+  function($scope, $state, modalService, searchService) {
+    $scope.closeModal = function() {
+      modalService.closeModal();
+    };
+
+    $scope.search = function() {
+      $scope.searchResults = '';
+      startSearch($scope.searchQuery);
+    };
+
+    var startSearch = ionic.debounce(function(query) {
+      searchService.search(query)
+        .then(function(data) {
+          $scope.searchResults = data;
+        });
 
 
-}]);
+    }, 750);
+
+    $scope.goToStock = function(ticker) {
+      modalService.closeModal();
+      $state.go('app.stock', {stockTicker: ticker});
+    };
+}])
+;
