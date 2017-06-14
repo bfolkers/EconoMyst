@@ -39,11 +39,11 @@ angular.module('economyst.controllers', [])
 
     $scope.openWindow = function(link) {
       var inAppBrowserOptions = {
-        locations: 'yes',
+        location: 'yes',
         clearcache: 'yes',
         toolbar: 'yes'
       };
-      cordovaInAppBrowser.open(link, '_blank', inAppBrowserOptions);
+      $cordovaInAppBrowser.open(link, '_blank', inAppBrowserOptions);
     };
 
     $scope.chartViewFunc = function(n) {
