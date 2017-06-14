@@ -17,15 +17,8 @@
   </div>
   <ion-content class="has-subheader">
     <img ng-src="http://finviz.com/chart.ashx?t={{ticker}}&ty=c&ta=1&p=d&s=l" style="width: 100%" />
-    <!-- <div ng-if="chartView == 4" nv-chart="chartOptions" style="height: 70vh;"></div> -->
     <div class="card">
       <div class="item item-divider">Stock Data</div>
-      <!-- <div class="row row-center">
-        <div class="col">Ask: </div>
-        <div class="col">{{stockPriceData.ask}}</div>
-        <div class="col">Bid: </div>
-        <div class="col">{{stockPriceData.bid}}</div>
-      </div> -->
       <div class="row row-center">
         <div class="col">Prev. Close: </div>
         <div class="col">{{stockPriceData.previousClose}}</div>
@@ -50,26 +43,7 @@
         <div class="col">Avg Volume: </div>
         <div class="col">{{stockPriceData.avgVolume}}</div>
       </div>
-      <!-- <div class="row row-center">
-        <div class="col">Market Cap: </div>
-        <div class="col">{{}}</div>
-        <div class="col">EBITDA: </div>
-        <div class="col">{{}}</div>
-      </div>
-      <div class="row row-center">
-        <div class="col">P/E: </div>
-        <div class="col">{{}}</div>
-        <div class="col">EPS: </div>
-        <div class="col">{{}}</div>
-      </div> -->
     </div>
-
-    <!-- <div class="card">
-      <div class="item item-divider">Notes</div>
-      <a class="item">
-        <h2>Note Title</h2>
-      </a>
-    </div> -->
 
     <div class="card">
       <div class="item item-divider">News</div>

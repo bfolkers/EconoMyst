@@ -1,28 +1,5 @@
 angular.module('economyst.services', [])
 
-// .factory('encodeURIService', function() {
-//
-//   return {
-//     encode: function(string) {
-//       return encodeURIComponent(string).replace(/\"/g, "%22").replace(/\ /g, "");
-//     }
-//   };
-// })
-//
-// .factory('dateService', function($filter) {
-//   var currentDate = function() {
-//     var d = new Date();
-//     var date = $filter('date')(d, 'yyyy-MM-dd');
-//     return date;
-//   };
-//
-//   var oneYearAgoDate = function() {
-//     var d = new Date(new Date().setDate(new Date().getDate() - 365));
-//     var date = $filter('date')(d, 'yyyy-MM-dd');
-//     return date;
-//   };
-// })
-
 .constant('FIREBASE_URL', 'https://economyst-a12f3.firebaseio.com/ ')
 
 .service('firebaseService', function($firebaseObject) {
@@ -43,11 +20,14 @@ angular.module('economyst.services', [])
   return firebaseRef;
 })
 
+
+
 .factory('userService', function($rootScope, firebase, $firebase, $firebaseObject, firebaseRef, modalService) {
   var login = function(user) {
     firebase.auth().signInWithEmailAndPassword(user.email, user.password)
       .then(function(status) {
-        $rootScope.currentUser = user;
+        $rootScope.currentUser = status;
+        console.log(status);
         modalService.closeModal();
       })
       .catch(function(error) {
@@ -237,22 +217,6 @@ angular.module('economyst.services', [])
 })
 
 .factory('stockDataService', function($q, $http, stockDetailsCacheService) {
-  // var getDetailsData = function(ticker) {
-  //   var deferred = $q.defer();
-  //   var url = "http://marketdata.websol.barchart.com/getQuote.json?key=16d4f4b5d562d5fdb21390e52afaeba2&symbols=" + ticker.toString();
-  //
-  //   $http.get(url)
-  //     .then(function(json) {
-  //       // var jsonData = json.data.results[0];
-  //       // deferred.resolve(jsonData);
-  //     })
-  //     .catch(function(err) {
-  //       console.log("Details data error" + err);
-  //       deferred.reject();
-  //     });
-  //
-  //     return deferred.promise;
-  // };
 
   var getPriceData = function(ticker) {
     var deferred = $q.defer();
@@ -285,83 +249,7 @@ angular.module('economyst.services', [])
 
 })
 
-// .factory('chartDataService', function($q, $http, encodeURIService, chartDataCacheService) {
-//   var getHistoricalData = function(ticker, fromDate, todayDate) {
-//     var deferred = $q.defer();
-//
-//     var cacheKey = ticker;
-//     var chartDataCache = chartDataCacheService.get(cacheKey);
-//
-//     var url = 'http://marketdata.websol.barchart.com/getHistory.json?key=16d4f4b5d562d5fdb21390e52afaeba2&symbol=' + ticker + '&type=daily&startDate=' + fromDate + '&endDate=' + todayDate;
-//
-//     if (chartDataCache) {
-//       deferred.resolve(chartDataCache);
-//     } else {
-//       $http.get(url)
-//         .then(function(json) {
-//           var jsonData = json.data.results;
-//
-//           var priceData = [];
-//           var volumeData = [];
-//
-//           jsonData.forEach(function(dayDataObject) {
-//             // console.log(dayDataObject);
-//             var dateToMillis = dayDataObject.timestamp;
-//             var date = Date.parse(dateToMillis);
-//             var price = parseFloat(Math.round(dayDataObject.close * 100) / 100).toFixed(2);
-//             var volume = dayDataObject.volume;
-//             var volumeDatum = '[' + date + ',' + volume + ']';
-//             var priceDatum = '[' + date + ',' + price + ']';
-//
-//             // console.log(volumeDatum, priceDatum);
-//
-//             volumeData.unshift(volumeDatum);
-//             priceData.unshift(priceDatum);
-//           });
-//
-//           var formattedChartData =
-//           '[{' +
-//             '"key":' + '"volume",' +
-//             '"bar":' + 'true,' +
-//             '"values":' + '[' + volumeData + ']' +
-//           '},' +
-//           '{' +
-//             '"key":' + '"' + ticker + '",' +
-//             '"values":' + '[' + priceData + ']' +
-//           '}]';
-//
-//           deferred.resolve(formattedChartData);
-//           chartDataCacheService.put(cacheKey, formattedChartData);
-//         })
-//         .catch(function(error) {
-//           console.log("Chart data error: " + error);
-//           deferred.reject();
-//         });
-//     }
-//       return deferred.promise;
-//
-//   };
-//
-//   return {
-//     getHistoricalData: getHistoricalData
-//   };
-// })
 
-// .factory('chartDataCacheService', function(CacheFactory) {
-//   var chartDataCache;
-//
-//   if (!CacheFactory.get('chartDataCache')) {
-//     chartDataCache = CacheFactory('chartDataCache', {
-//       maxAge: 60 * 60 * 8 * 1000,
-//       deleteOnExpire: 'aggressive',
-//       storageMode: 'localStorage'
-//     });
-//   } else {
-//     chartDataCache = CacheFactory.get('chartDataCache');
-//   }
-//
-//   return chartDataCache;
-// })
 
 .factory('stockDetailsCacheService', function(CacheFactory) {
 

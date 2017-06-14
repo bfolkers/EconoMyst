@@ -6,15 +6,13 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('economyst', [
   'ionic',
+  'ngCordova',
   'firebase',
   'angular-cache',
-  // 'nvd3',
-  // 'nvChart',
   'cb.x2js',
   'economyst.controllers',
   'economyst.services',
-  'economyst.directives'/*,
-  'economyst.filters'*/
+  'economyst.directives'
 ])
 
 .run(function($ionicPlatform) {
