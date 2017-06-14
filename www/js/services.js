@@ -2,7 +2,6 @@ angular.module('economyst.services', [])
 
 .factory('firebaseRef', function(firebase, $firebase, $firebaseObject) {
   var firebaseRef = firebase.database().ref();
-  // this.data = $firebaseObject(firebaseRef);
   return firebaseRef;
 })
 
@@ -10,10 +9,10 @@ angular.module('economyst.services', [])
     var userDataCache;
 
     if(!CacheFactory.get('userDataCache')){
-      userDataCache=CacheFactory('userDataCache',{
-        maxAge: 60*60*8*1000,
+      userDataCache = CacheFactory('userDataCache',{
+        maxAge: 60 * 60 * 8 * 1000,
         deleteOnExpire: 'aggressive',
-        storageMode:'localStorage'
+        storageMode: 'localStorage'
       });
     }
     else {
@@ -47,13 +46,10 @@ angular.module('economyst.services', [])
         login(user);
       })
       .catch(function(error) {
-      // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log(errorCode, errorMessage);
-      // ...
     });
-
   };
 
   var logout = function() {
@@ -76,15 +72,6 @@ angular.module('economyst.services', [])
         return null;
       }
     });
-    // var user = firebase.auth().currentUser;
-    //
-    // if (user) {
-    //   return user;
-    // } else {
-    //   return null;
-    // }
-
-
   };
 
   if (getUser()) {
@@ -247,12 +234,8 @@ angular.module('economyst.services', [])
   };
   return {
     getPriceData: getPriceData
-    // ,getDetailsData: getDetailsData
   };
-
 })
-
-
 
 .factory('stockDetailsCacheService', function(CacheFactory) {
 

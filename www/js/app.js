@@ -4,6 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
+
 angular.module('economyst', [
   'ionic',
   'ngCordova',
@@ -11,12 +12,12 @@ angular.module('economyst', [
   'angular-cache',
   'cb.x2js',
   'economyst.controllers',
-  'economyst.services',
-  'economyst.directives'
+  'economyst.services'
 ])
 
 .run(function($ionicPlatform,$rootScope,userCacheService) {
   $ionicPlatform.ready(function() {
+    // Check if there is a currently logged in user
     if(userCacheService.keys().length !== 0){
       $rootScope.currentUser = userCacheService.get(userCacheService.keys());
     }
@@ -36,35 +37,35 @@ angular.module('economyst', [
   });
 })
 
-
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-    .state('app.myStocks', {
-      url: '/my-stocks',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/my-stocks.html',
-          controller: 'MyStocksCtrl'
-        }
-      }
-    })
 
-    .state('app.stock', {
-      url: '/:stockTicker',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/stock.html',
-          controller: 'StockCtrl'
-        }
+  .state('app.myStocks', {
+    url: '/my-stocks',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/my-stocks.html',
+        controller: 'MyStocksCtrl'
       }
-    });
+    }
+  })
+
+  .state('app.stock', {
+    url: '/:stockTicker',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/stock.html',
+        controller: 'StockCtrl'
+      }
+    }
+  });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/my-stocks');
 });

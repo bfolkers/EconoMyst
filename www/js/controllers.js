@@ -17,9 +17,6 @@ angular.module('economyst.controllers', [])
 .controller('StockCtrl', ['$scope', '$stateParams', '$window', 'followStockService', 'stockDataService', 'newsService', '$cordovaInAppBrowser',
   function($scope, $stateParams, $window, followStockService, stockDataService, newsService, $cordovaInAppBrowser) {
     $scope.ticker = $stateParams.stockTicker;
-    $scope.chartView = 4;
-    $scope.oneYearAgoDate = '20160611';
-    $scope.todayDate = '20170611';
     $scope.following = followStockService.checkFollowing($scope.ticker);
 
     $scope.$on("$ionicView.afterEnter", function() {
@@ -44,10 +41,6 @@ angular.module('economyst.controllers', [])
         toolbar: 'yes'
       };
       $cordovaInAppBrowser.open(link, '_blank', inAppBrowserOptions);
-    };
-
-    $scope.chartViewFunc = function(n) {
-      $scope.chartView = n;
     };
 
     function getNews() {
@@ -94,10 +87,6 @@ angular.module('economyst.controllers', [])
 
 .controller('LoginSignupCtrl', ['$scope', 'modalService', 'userService',
   function($scope, modalService, userService) {
-    // $scope.user = {
-    //   email: '',
-    //   password: ''
-    // };
 
     $scope.closeModal = function() {
       modalService.closeModal();
