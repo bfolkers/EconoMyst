@@ -42,3 +42,15 @@
 .text-align-center {
   text-align: center !important;
 }
+
+.background-green {
+  background-color: #33cd5f !important;
+}
+
+.background-red {
+  background-color: #ef473a !important;
+}
+
+.ion-dark-class {
+  background-color: #444 !important;
+}

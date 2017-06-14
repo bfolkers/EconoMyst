@@ -17,18 +17,18 @@
       </div>
       <h1 class="title">EconoMyst</h1>
     </ion-header-bar>
-    <ion-content>
+    <ion-content class="ion-dark-class">
       <ion-list>
-        <ion-item menu-close ng-hide="currentUser" ng-click="modalService.openModal(2)">
+        <ion-item class="item-dark" menu-close ng-hide="currentUser" ng-click="modalService.openModal(2)">
           Login
         </ion-item>
-        <ion-item menu-close ng-hide="currentUser" ng-click="modalService.openModal(3)">
+        <ion-item class="item-dark" menu-close ng-hide="currentUser" ng-click="modalService.openModal(3)">
           Sign Up
         </ion-item>
-        <ion-item menu-close ui-sref="app.myStocks">
-          My Stocks
+        <ion-item class="item-dark" menu-close ui-sref="app.myStocks">
+          My Stock List
         </ion-item>
-        <ion-item menu-close ng-click="modalService.openModal(1)">
+        <ion-item class="item-dark" menu-close ng-click="modalService.openModal(1)">
           Search Stocks
         </ion-item>
       </ion-list>

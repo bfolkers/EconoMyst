@@ -1,42 +1,44 @@
 angular.module('economyst.services', [])
 
-.constant('FIREBASE_URL', 'https://economyst-a12f3.firebaseio.com/ ')
-
-.service('firebaseService', function($firebaseObject) {
-
-})
-
-// .factory('firebaseRef', function($firebase, FIREBASE_URL) {
-//
-//   var firebaseRef = new Firebase(FIREBASE_URL);
-//
-//   return firebaseRef;
-// })
-
 .factory('firebaseRef', function(firebase, $firebase, $firebaseObject) {
   var firebaseRef = firebase.database().ref();
   // this.data = $firebaseObject(firebaseRef);
-
   return firebaseRef;
 })
 
+.factory('userCacheService',function(CacheFactory){
+    var userDataCache;
 
+    if(!CacheFactory.get('userDataCache')){
+      userDataCache=CacheFactory('userDataCache',{
+        maxAge: 60*60*8*1000,
+        deleteOnExpire: 'aggressive',
+        storageMode:'localStorage'
+      });
+    }
+    else {
+      userDataCache=CacheFactory.get('userDataCache');
+    }
+  return userDataCache;
+ })
 
-.factory('userService', function($rootScope, firebase, $firebase, $firebaseObject, firebaseRef, modalService) {
+.factory('userService', function($rootScope, firebase, $firebase, $firebaseObject, firebaseRef, modalService, userCacheService) {
   var login = function(user) {
     firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-      .then(function(status) {
-        $rootScope.currentUser = status;
-        console.log(status);
+      .then(function(authData) {
+        $rootScope.currentUser = authData;
+        console.log(authData);
+        userCacheService.put(user.email, authData);
         modalService.closeModal();
+        $timeout(function() {
+          $window.location.reload(true);
+        }, 400);
       })
       .catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-      // ...
-    });
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
   var signup = function(user) {
@@ -58,6 +60,7 @@ angular.module('economyst.services', [])
     firebase.auth().signOut()
       .then(function() {
         $rootScope.currentUser = '';
+        userCacheService.removeAll();
       })
       .catch(function(error) {
         console.log(error);

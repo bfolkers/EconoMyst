@@ -1,4 +1,4 @@
-<ion-view view-title="My Stocks">
+<ion-view view-title="My Stock List">
   <ion-nav-buttons side="right">
     <button class="button-clear" ng-click="modalService.openModal(1)">
       <i class="icon icon-small ion-ios-search dark"></i>
@@ -6,10 +6,16 @@
   </ion-nav-buttons>
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="stock in myStocksArray track by stock.ticker" ng-href="#/app/{{stock.ticker}}">
+      <ion-item class="item-dark" ng-repeat="stock in myStocksArray track by stock.ticker" ng-href="#/app/{{stock.ticker}}">
         <div class="row row-center">
           <div class="col">
-            <h3>{{stock.ticker}}</h3>
+            <h3 class="light">{{stock.ticker}}</h3>
+          </div>
+          <div class="col">
+            <h6 class="light">Company Name Inc.</h6>
+          </div>
+          <div class="col">
+            <h6 class="light">+2.5%</h6>
           </div>
         </div>
       </ion-item>
