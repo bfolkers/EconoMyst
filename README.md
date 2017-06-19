@@ -19,7 +19,7 @@ ionic serve
 * Finviz Chart API
 * Ionic
 * AngularJS
-* D3.js
+* Firebase
 * Udemy
 * Hunter Leaman
 
